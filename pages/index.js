@@ -5,6 +5,7 @@ import styles from "./index.module.css";
 export default function Home() {
   const [animalInput, setAnimalInput] = useState("");
   const [result, setResult] = useState();
+  const [tokens, setTokens] = useState();
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -19,12 +20,16 @@ export default function Home() {
 
       const data = await response.json();
       if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
+        throw (
+          data.error ||
+          new Error(`Request failed with status ${response.status}`)
+        );
       }
 
-      setResult(data.result);
+      setResult(data.result.choices[0].text);
+      setTokens(data.result.usage.total_tokens);
       setAnimalInput("");
-    } catch(error) {
+    } catch (error) {
       // Consider implementing your own error handling logic here
       console.error(error);
       alert(error.message);
@@ -34,13 +39,14 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>OpenAI Quickstart</title>
+        <title>ZackGPT</title>
         <link rel="icon" href="/dog.png" />
       </Head>
 
       <main className={styles.main}>
-        <img src="/dog.png" className={styles.icon} />
-        <h3>Name my pet</h3>
+        {/* <img src="/dog.png" className={styles.icon} /> */}
+        <h1>Welcome to ZackGPT</h1>
+        <h3>I know everything there is to know... just ask me.</h3>
         <form onSubmit={onSubmit}>
           <input
             type="text"
@@ -52,6 +58,7 @@ export default function Home() {
           <input type="submit" value="Generate names" />
         </form>
         <div className={styles.result}>{result}</div>
+        <div>Tokens: {tokens}</div>
       </main>
     </div>
   );
