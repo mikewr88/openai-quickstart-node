@@ -1,4 +1,5 @@
 import { Configuration, OpenAIApi } from "openai";
+import { useContext } from "react";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -16,30 +17,27 @@ export default async function (req, res) {
     return;
   }
 
-  const animal = req.body.animal || "";
-  if (animal.trim().length === 0) {
+  let prompt = cleanPromptAddContext(req.body.prompt, req.body.context) || "";
+
+  console.log(prompt);
+
+  const modelName = req.body.modelName || "";
+  if (prompt.trim().length === 0) {
     res.status(400).json({
       error: {
-        message: "Please enter a valid animal",
+        message: "Please enter a valid prompt",
       },
     });
     return;
   }
 
   try {
-    const models = [
-      "text-davinci-003",
-      "text-curie-001",
-      "text-babbage-001",
-      "text-ada-001",
-    ];
     const completion = await openai.createCompletion({
-      model: models[2],
-      prompt: animal,
+      model: modelName,
+      prompt: prompt,
       temperature: 0.6,
-      context: ["Suggest three names for an animal that is a superhero."],
+      max_tokens: 100,
     });
-    console.log(completion);
     res.status(200).json({ result: completion.data });
   } catch (error) {
     // Consider adjusting the error handling logic for your use case
@@ -61,15 +59,32 @@ export default async function (req, res) {
 
 // }
 
-function generatePrompt(animal) {
-  const capitalizedAnimal =
-    animal[0].toUpperCase() + animal.slice(1).toLowerCase();
-  return `Suggest three names for an animal that is a superhero.
+function cleanPromptAddContext(prompt, ctx) {
+  prompt = "q:" + prompt;
+  if (
+    prompt.charAt(prompt.length - 1) !== "." ||
+    prompt.charAt(prompt.length - 1) !== "?"
+  ) {
+    prompt += "?";
+  }
+  ctx.forEach((ctxStr, i) => {
+    prompt = `Q:${ctxStr.q} A:${ctxStr.a}) ${prompt}`;
+    if (ctx.length === i + 1) {
+      prompt = `previous conversation( ${prompt}`;
+    }
+  });
+  return prompt;
+}
 
-Animal: Cat
+function generatePrompt(prompt) {
+  const capitalizedprompt =
+    prompt[0].toUpperCase() + prompt.slice(1).toLowerCase();
+  return `Suggest three names for an prompt that is a superhero.
+
+prompt: Cat
 Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
-Animal: Dog
+prompt: Dog
 Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-Animal: ${capitalizedAnimal}
+prompt: ${capitalizedprompt}
 Names:`;
 }

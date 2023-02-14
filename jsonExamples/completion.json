@@ -1,0 +1,10 @@
+
+    data: {
+        id: 'cmpl-6jhtJVAsKk3WYKyY3C6cP7cjy88mC',
+        object: 'text_completion',
+        created: 1676351497,
+        model: 'text-babbage-001',
+        choices: [Array],
+        usage: [Object]
+      }
+    
