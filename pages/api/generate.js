@@ -2,7 +2,8 @@ import { Configuration, OpenAIApi } from "openai";
 import { useContext } from "react";
 
 const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+  // apiKey: process.env.OPENAI_API_KEY,
+  apiKey: "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",
 });
 const openai = new OpenAIApi(configuration);
 
