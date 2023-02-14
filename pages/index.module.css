@@ -27,6 +27,7 @@
   align-items: center;
   padding-top: 60px;
   height: 100vh;
+  text-align: center;
   background: linear-gradient(
     30deg,
     rgb(253, 251, 118) 20%,
@@ -34,12 +35,14 @@
     rgb(0, 219, 150) 80%,
     rgb(73, 41, 126) 80%
   );
+  padding: 0 20px;
 }
 .main .icon {
   width: 34px;
 }
 
 .main h1 {
+  margin: 30px 0;
   color: rgb(253, 251, 118);
   text-shadow: 2px 2px 3px rgb(0, 0, 0);
 }
@@ -47,14 +50,16 @@
   font-size: 25px;
   line-height: 40px;
   font-weight: bold;
-  color: rgb(0, 219, 150);
+  color: rgb(255, 255, 255);
   margin: 16px 0 40px;
+  text-align: center;
 }
 .main form {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 500px;
+  max-width: 90%;
   position: relative;
 }
 
@@ -104,6 +109,10 @@
 .main .result {
   font-weight: bold;
   margin-top: 40px;
+  border-right: 2px solid rgb(73, 41, 126);
+  border-left: 2px solid rgb(253, 251, 118);
+
+  padding: 0 8px;
 }
 
 .main select {

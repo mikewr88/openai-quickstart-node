@@ -1,4 +1,5 @@
 import Head from "next/head";
+
 import { useState } from "react";
 import styles from "./index.module.css";
 
@@ -86,10 +87,10 @@ export default function Home() {
           <input type="submit" value="Send Prompt" />
         </form>
         <div className={styles.result}>{result}</div>
-        <div>
+        <p>
           Used {tokens} tokens, costing {calcCostFromTokens(tokens, modelName)}{" "}
           cents
-        </div>
+        </p>
       </main>
     </div>
   );
